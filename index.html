@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>极速北京 · 3D Racing</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏎️</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #0b1020; }
+    canvas#game { display: block; }
+    #hud {
+      position: fixed; inset: 0; pointer-events: none;
+      font-family: "Chalkboard SE", "Kaiti SC", "KaiTi", "Comic Sans MS", "PingFang SC", cursive;
+      color: #4a3f35; user-select: none;
+    }
+    .panel {
+      background: #fffaf0;
+      border: 2px solid #e6d9c3;
+      border-radius: 8px;
+      box-shadow: 3px 4px 0 rgba(90, 70, 50, 0.18);
+      padding: 10px 14px;
+    }
+    #topleft {
+      position: absolute; top: 16px; left: 16px;
+      font-size: 15px; line-height: 1.7; min-width: 170px;
+      transform: rotate(-1.5deg);
+    }
+    #topleft .lap { font-size: 22px; font-weight: 700; letter-spacing: 1px; color: #d1495b; }
+    #topleft .dim { color: #a08c72; font-size: 12px; }
+    #topright {
+      position: absolute; top: 16px; right: 16px;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+      transform: rotate(1.2deg);
+    }
+    #rank { font-size: 26px; font-weight: 800; padding: 6px 16px; color: #d1495b; }
+    #rank small { font-size: 14px; font-weight: 400; color: #a08c72; }
+    #minimap { border-radius: 8px; background: #fffaf0; border: 2px solid #e6d9c3;
+      box-shadow: 3px 4px 0 rgba(90, 70, 50, 0.18); }
+    #speed {
+      position: absolute; bottom: 24px; right: 28px; text-align: right;
+    }
+    #speed .num { font-size: 52px; font-weight: 800; font-style: italic; color: #e76f51;
+      text-shadow: 3px 3px 0 rgba(90, 70, 50, 0.22); }
+    #speed .unit { font-size: 14px; color: #7a6a55; letter-spacing: 2px; }
+    #hint {
+      position: absolute; bottom: 20px; left: 20px;
+      font-size: 12px; color: rgba(74, 63, 53, 0.8); line-height: 1.8;
+      text-shadow: 0 1px 0 rgba(255,250,240,0.8);
+    }
+    #overlay {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px;
+      background: rgba(110, 92, 70, 0.35); text-align: center;
+    }
+    #overlay.hidden { display: none; }
+    #overlay h1 { font-size: 56px; font-weight: 900; letter-spacing: 4px; color: #fffaf0;
+      text-shadow: 4px 4px 0 rgba(90, 70, 50, 0.4); }
+    #overlay .big { font-size: 110px; font-weight: 900; color: #ffd166;
+      text-shadow: 5px 5px 0 rgba(90, 70, 50, 0.4); }
+    #overlay p { font-size: 16px; color: #fffaf0; line-height: 2; text-shadow: 1px 1px 0 rgba(90,70,50,0.4); }
+    #overlay .result { font-size: 20px; line-height: 2; color: #fffaf0; }
+    #overlay .blink { animation: blink 1.2s infinite; }
+    @keyframes blink { 50% { opacity: 0.25; } }
+  </style>
+  <script type="module" crossorigin src="./assets/index-DHem0EBm.js"></script>
+</head>
+<body>
+  <div id="hud">
+    <div id="topleft" class="panel">
+      <div class="lap">LAP <span id="lap">1</span>/<span id="laps">3</span></div>
+      <div><span class="dim">时间</span> <span id="time">0:00.000</span></div>
+      <div><span class="dim">单圈</span> <span id="curlap">0:00.000</span></div>
+      <div><span class="dim">最快</span> <span id="best">--:--.---</span></div>
+      <div><span class="dim">金币</span> 🪙 <span id="coins">0</span></div>
+    </div>
+    <div id="topright">
+      <div id="rank" class="panel">1<small> / 4</small></div>
+      <canvas id="minimap" width="180" height="180"></canvas>
+    </div>
+    <div id="speed">
+      <div class="num" id="speedNum">0</div>
+      <div class="unit">KM/H</div>
+    </div>
+    <div id="hint">
+      ↑/W 油门 &nbsp; ↓/S 刹车·倒车 &nbsp; ←→/AD 转向 &nbsp; 空格 漂移 &nbsp; R 复位赛道 &nbsp; C 换视角
+    </div>
+    <div id="overlay">
+      <h1>极速北京</h1>
+      <p>穿越京城地标的 3 圈计时赛 · 与 3 名 AI 车手一决高下<br>↑↓←→ 或 WASD 驾驶 · 空格漂移过弯 · 冲出赛道会减速</p>
+      <p class="blink">按任意键开始</p>
+    </div>
+  </div>
+</body>
+</html>
